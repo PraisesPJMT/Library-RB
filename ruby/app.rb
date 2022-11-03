@@ -83,6 +83,17 @@ class App
       create_teacher
     end
   end
+
+  def create_book
+    puts 'Please enter the following details to create a book'
+    print 'Title: '
+    title = gets.chomp
+    print 'Author: '
+    author = gets.chomp
+    new_book = Book.new(title, author)
+    @books << new_book
+    puts "#{new_book.title} book by #{new_book.author} was added successful"
+  end
 end
 
 # Helper methods
