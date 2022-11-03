@@ -2,11 +2,13 @@ require_relative 'book'
 require_relative 'teacher'
 require_relative 'student'
 require_relative 'classroom'
+require_relative 'rental'
 
 class App
   def initialize
     @books = []
     @people = []
+    @rentals = []
   end
 
   def list_people
@@ -94,6 +96,18 @@ class App
     @books << new_book
     puts "#{new_book.title} book by #{new_book.author} was added successful"
   end
+
+  def create_rental
+    if @people.length.positive? && @books.length.positive?
+      generate_rental
+    elsif @people.length.positive?
+      puts 'No book has been created yet. Please create a book to rent'
+    elsif @books.length.positive?
+      puts 'No person has been created yet. Please create a person to rent a book'
+    else
+      puts 'Please create both a person and a book to create a rent'
+    end
+  end
 end
 
 # Helper methods
@@ -114,4 +128,45 @@ def obtain_permission
     permission = false
   end
   permission
+end
+
+def verify_book(book_input)
+  book = book_input
+  until book.positive? && book <= @books.length
+    puts 'INVALID SELECTION! Please only select a book from the following list by number'
+    list_books
+    print 'Book: '
+    book = gets.chomp.to_i
+  end
+  book - 1
+end
+
+def verify_person(person_input)
+  person = person_input
+  until person.positive? && person <= @people.length
+    puts 'INVALID SELECTION! Please only select a person from the following list by number'
+    list_people
+    print 'Person: '
+    person = gets.chomp.to_i
+  end
+  person - 1
+end
+
+def generate_rental
+  puts 'Select a book from the following list by number'
+  list_books
+  print 'Book: '
+  book_input = gets.chomp.to_i
+  book = @books[verify_book(book_input)]
+  puts 'Select a person from the following list by number (not ID)'
+  list_people
+  print 'Person: '
+  person_input = gets.chomp.to_i
+  person = @people[verify_person(person_input)]
+  puts 'Enter date in this format [yyyy/mm/dd]'
+  print 'Date: '
+  date = gets.chomp
+  new_rental = Rental.new(date, person, book)
+  @rentals << new_rental
+  puts "#{book.title} book was rented successful"
 end
