@@ -33,6 +33,27 @@ class App
     end
   end
 
+  def list_rentals
+    if @rentals.length.positive?
+      list_people
+      puts "Enter the persons' ID to get list of rentals"
+      print 'ID: '
+      identity = gets.chomp.to_i
+      rental_person = get_rentals(identity)
+      rental_list = @rentals.select { |rental| rental.person.id == rental_person.id }
+      if rental_list.empty?
+        puts "#{rental_person.name} Person is yet to rent a book."
+      else
+        puts "List of books rented by #{rental_person.name} [#{rental_person.class}]"
+        rental_list.each_with_index do |rental, index|
+          puts "[#{index + 1}] Date: #{rental.date}, Book: #{rental.book.title} by #{rental.book.author}"
+        end
+      end
+    else
+      puts 'No rent has been made yet. Please rent a book'
+    end
+  end
+
   def create_student
     print 'Name: '
     name = gets.chomp
@@ -169,4 +190,16 @@ def generate_rental
   new_rental = Rental.new(date, person, book)
   @rentals << new_rental
   puts "#{book.title} book was rented successful"
+end
+
+def get_rentals(identity)
+  rental_person = @people.select { |person| person.id == identity }
+  until rental_person.length.positive?
+    list_people
+    puts "Input ID is invalid. Please enter a persons' ID to get list of rentals"
+    print 'ID: '
+    identity = gets.chomp.to_i
+    rental_person = @people.select { |person| person.id == identity }
+  end
+  rental_person[0]
 end
