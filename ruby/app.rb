@@ -3,6 +3,18 @@ require_relative 'book'
 class App
   def initialize
     @books = []
+    @people = []
+  end
+
+  def list_people
+    if @people.length.positive?
+      puts 'List of people'
+      @people.each_with_index do |person, index|
+        puts "[#{index + 1}] - [#{person.class}] Name: #{person.name}, ID: #{person.id}, Age: #{person.age}"
+      end
+    else
+      puts 'No person has been added yet. Please create a person'
+    end
   end
 
   def list_books
