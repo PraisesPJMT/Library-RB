@@ -1,0 +1,205 @@
+require_relative 'book'
+require_relative 'teacher'
+require_relative 'student'
+require_relative 'classroom'
+require_relative 'rental'
+
+class App
+  def initialize
+    @books = []
+    @people = []
+    @rentals = []
+  end
+
+  def list_people
+    if @people.length.positive?
+      puts 'List of people'
+      @people.each_with_index do |person, index|
+        puts "[#{index + 1}] - [#{person.class}] Name: #{person.name}, ID: #{person.id}, Age: #{person.age}"
+      end
+    else
+      puts 'No person has been added yet. Please create a person'
+    end
+  end
+
+  def list_books
+    if @books.length.positive?
+      puts 'List of books'
+      @books.each_with_index do |book, index|
+        puts "[#{index + 1}] #{book.title} by #{book.author}"
+      end
+    else
+      puts 'No book has been added yet. Please create a book'
+    end
+  end
+
+  def list_rentals
+    if @rentals.length.positive?
+      list_people
+      puts "Enter the persons' ID to get list of rentals"
+      print 'ID: '
+      identity = gets.chomp.to_i
+      rental_person = get_rentals(identity)
+      rental_list = @rentals.select { |rental| rental.person.id == rental_person.id }
+      if rental_list.empty?
+        puts "#{rental_person.name} Person is yet to rent a book."
+      else
+        puts "List of books rented by #{rental_person.name} [#{rental_person.class}]"
+        rental_list.each_with_index do |rental, index|
+          puts "[#{index + 1}] Date: #{rental.date}, Book: #{rental.book.title} by #{rental.book.author}"
+        end
+      end
+    else
+      puts 'No rent has been made yet. Please rent a book'
+    end
+  end
+
+  def create_student
+    print 'Name: '
+    name = gets.chomp
+    print 'Age: '
+    age = gets.chomp
+    until age.to_i.positive?
+      puts "Please students' age should be a number"
+      print 'Age: '
+      age = gets.chomp
+    end
+    print 'Classroom: '
+    classroom_input = gets.chomp
+    classroom = Classroom.new(classroom_input)
+    permission = obtain_permission
+    new_student = Student.new(classroom, age, name, permission)
+    @people << new_student
+    puts "New Student (#{new_student.name.capitalize}) was created successful"
+  end
+
+  def create_teacher
+    print 'Name: '
+    name = gets.chomp
+    print 'Age: '
+    age = gets.chomp
+    until age.to_i.positive?
+      puts "Please teachers' age should be a number"
+      print 'Age: '
+      age = gets.chomp
+    end
+    print 'Specialization: '
+    spec = gets.chomp
+    new_teacher = Teacher.new(spec, age, name)
+    @people << new_teacher
+    puts "New Teacher (#{new_teacher.name.capitalize}) was created successful"
+  end
+
+  def create_person
+    puts 'Do you want to create a student (1) or a teacher (2)?'
+    print '[Input the number]: '
+    person_response = gets.chomp
+    until %w[1 2].include?(person_response)
+      puts 'Please input (1) to create a student or input (2) to create a teacher'
+      print '[Input the number]: '
+      person_response = gets.chomp
+    end
+    case person_response
+    when '1'
+      create_student
+    when '2'
+      create_teacher
+    end
+  end
+
+  def create_book
+    puts 'Please enter the following details to create a book'
+    print 'Title: '
+    title = gets.chomp
+    print 'Author: '
+    author = gets.chomp
+    new_book = Book.new(title, author)
+    @books << new_book
+    puts "#{new_book.title} book by #{new_book.author} was added successful"
+  end
+
+  def create_rental
+    if @people.length.positive? && @books.length.positive?
+      generate_rental
+    elsif @people.length.positive?
+      puts 'No book has been created yet. Please create a book to rent'
+    elsif @books.length.positive?
+      puts 'No person has been created yet. Please create a person to rent a book'
+    else
+      puts 'Please create both a person and a book to create a rent'
+    end
+  end
+end
+
+# Helper methods
+
+def obtain_permission
+  permission = true
+  print 'Has parent permission? [Y/N]]: '
+  parent_permission = gets.chomp
+  until %w[yes y n no].include? parent_permission.downcase
+    puts 'Parent permission input must be either Y, Yes, N, or No'
+    print 'Has parent permission? [Y/N]]: '
+    parent_permission = gets.chomp
+  end
+  case parent_permission.downcase
+  when 'y', 'yes'
+    permission = true
+  when 'n', 'no'
+    permission = false
+  end
+  permission
+end
+
+def verify_book(book_input)
+  book = book_input
+  until book.positive? && book <= @books.length
+    puts 'INVALID SELECTION! Please only select a book from the following list by number'
+    list_books
+    print 'Book: '
+    book = gets.chomp.to_i
+  end
+  book - 1
+end
+
+def verify_person(person_input)
+  person = person_input
+  until person.positive? && person <= @people.length
+    puts 'INVALID SELECTION! Please only select a person from the following list by number'
+    list_people
+    print 'Person: '
+    person = gets.chomp.to_i
+  end
+  person - 1
+end
+
+def generate_rental
+  puts 'Select a book from the following list by number'
+  list_books
+  print 'Book: '
+  book_input = gets.chomp.to_i
+  book = @books[verify_book(book_input)]
+  puts 'Select a person from the following list by number (not ID)'
+  list_people
+  print 'Person: '
+  person_input = gets.chomp.to_i
+  person = @people[verify_person(person_input)]
+  puts 'Enter date in this format [yyyy/mm/dd]'
+  print 'Date: '
+  date = gets.chomp
+  new_rental = Rental.new(date, person, book)
+  @rentals << new_rental
+  puts "#{book.title} book was rented successful"
+end
+
+def get_rentals(identity)
+  rental_person = @people.select { |person| person.id == identity }
+  until rental_person.length.positive?
+    list_people
+    puts "Input ID is invalid. Please enter a persons' ID to get list of rentals"
+    print 'ID: '
+    identity = gets.chomp.to_i
+    rental_person = @people.select { |person| person.id == identity }
+  end
+  rental_person[0]
+end
