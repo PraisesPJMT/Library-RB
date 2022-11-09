@@ -22,6 +22,17 @@ module Storage
     end
   end
 
+  def import_books
+    book_store = 'storage/books.json'
+    if File.exist? book_store
+      JSON.parse(File.read(book_store)).map do |book|
+        Book.new(book['title'], book['author'])
+      end
+    else
+      []
+    end
+  end
+
   def import_rentals
     rental_store = 'storage/rentals.json'
     if File.exist? rental_store
