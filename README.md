@@ -1,12 +1,15 @@
 # Library-RB
 
-> Library-RB is an application for the `OOP University` that records what books are in the library and who borrows them. The allow you to:
+> Library-RB is an application for the `OOP University` that records what books are in the library and who borrows them. The app allows you to do the following:
+>
 > - Add new students or teachers.
 > - Add new books.
 > - Save records of who borrowed a given book and when.
 
 ## Built With [Linter]
-- ![Ruby](https://img.shields.io/badge/ruby-A30031.svg?style=for-the-badge&logo=ruby&logoColor=white) ![Rubocop](https://img.shields.io/badge/LightHouse-A30031.svg?style=for-the-badge)
+
+![Ruby](https://img.shields.io/badge/ruby-A30031.svg?style=for-the-badge&logo=ruby&logoColor=white) ![Rubocop](https://img.shields.io/badge/Rubocop-A30031.svg?style=for-the-badge)
+
 ## Authors
 
 👤 **Praises Tula**
@@ -16,6 +19,12 @@
 [![Twitter](https://img.shields.io/badge/Twitter-%231DA1F2.svg?style=for-the-badge&logo=Twitter&logoColor=white)](https://twitter.com/PraisesPJMT/)
 [![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:praisesmusa@gmail.com)
 [![AngelList](https://img.shields.io/badge/AngelList-%23D4D4D4.svg?style=for-the-badge&logo=AngelList&logoColor=black)](https://angel.co/u/praises-tula/)
+
+👤 **Kwaleyela Musilizo Ikafa**
+
+- GitHub: [@Kwaleyela-Ikafa](https://github.com/Kwaleyela-Ikafa)
+- Twitter: [@K_Ikafa](https://twitter.com/K_Ikafa)
+- LinkedIn: [LinkedIn](https://www.linkedin.com/in/kwaleyela-musilizo-ikafa/)
 
 ## 🤝 Contributing
 
