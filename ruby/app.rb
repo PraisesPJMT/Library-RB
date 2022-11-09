@@ -1,14 +1,16 @@
 require_relative 'list_module'
 require_relative 'create_module'
+require_relative 'preserve_data'
 
 class Library
   include List
   include Create
+  include Storage
 
   def initialize
-    @books = []
-    @people = []
-    @rentals = []
+    @books = import_books
+    @people = import_people
+    @rentals = import_rentals
   end
 
   def display_menu

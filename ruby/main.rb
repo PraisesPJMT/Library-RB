@@ -15,6 +15,7 @@ def main
     if main_response == '7'
       @exit = true
       puts 'Thanks for using the School Library'
+      library.store_data
     end
     library.execute_command(main_response)
   end
