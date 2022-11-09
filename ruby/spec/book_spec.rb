@@ -1,8 +1,4 @@
-require_relative '../book'
-require_relative '../classroom'
-require_relative '../student'
-require_relative '../teacher'
-require_relative '../rental'
+require_relative 'spec_helper'
 
 describe Book do
   title = 'Introduction to Ruby'

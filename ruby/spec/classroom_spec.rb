@@ -1,5 +1,4 @@
-require_relative '../classroom'
-require_relative '../student'
+require_relative 'spec_helper'
 
 describe Classroom do
   class_name = 'Frontend'

@@ -1,4 +1,4 @@
-require_relative '../decorator'
+require_relative 'spec_helper'
 
 describe Decorator do
   decorator = Decorator.new('maximilianus')

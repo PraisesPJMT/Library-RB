@@ -1,6 +1,4 @@
-require_relative '../person'
-require_relative '../book'
-require_relative '../rental'
+require_relative 'spec_helper'
 
 describe Person do
   context 'Person could be created' do
